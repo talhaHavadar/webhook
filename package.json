@@ -1,9 +1,8 @@
 {
-  "name": "koalerplate",
-  "homepage": "https://github.com/dbalas/koalerplate.git",
-  "description": "A simple Koa 2 boilerplate for API's using ES6.",
+  "name": "webhook",
+  "description": "A webhook for github to handle automatic deploys.",
   "bugs": {
-    "url": "https://github.com/dbalas/koalerplate/issues/new"
+    "url": "https://github.com/talhaHavadar/webhook.git"
   },
   "keywords": [
     "koa",
@@ -13,10 +12,10 @@
     "api",
     "es6"
   ],
-  "repository": "git@github.com:dbalas/koalerplate.git",
-  "author": "Daniel Balastegui",
+  "repository": "git@github.com:talhaHavadar/webhook.git",
+  "author": "Talha Can Havadar <havadartalha@gmail.com>",
   "license": "MIT",
-  "version": "1.4.0",
+  "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index",

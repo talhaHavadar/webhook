@@ -29,10 +29,14 @@ app.use(BodyParser({
 app.use(respond())
 
 app.use(async(ctx, next) => {
-  if (ctx.request.get("x-hub-signature") && githubSec.checkSignatures(ctx.request)) {
+  if (ctx.method === "GET") {
     await next();
   } else {
-    ctx.badRequest();
+    if (ctx.request.get("x-hub-signature") && githubSec.checkSignatures(ctx.request)) {
+      await next();
+    } else {
+      ctx.badRequest();
+    }
   }
 });
 

@@ -16,7 +16,7 @@ router
             ctx.notImplemented({ event: ctx.request.get('X-GitHub-Event') });
         }
     }).get('/', (ctx, next) => {
-        ctx.ok({ message: "Hello Brozz!!" });
+        ctx.ok({ message: "Hello Brozz!!", version: "1.0.0" });
     });
 
 module.exports = router.routes();
