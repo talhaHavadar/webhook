@@ -5,6 +5,7 @@ const Cors = require('@koa/cors')
 const BodyParser = require('koa-bodyparser')
 const Helmet = require('koa-helmet')
 const respond = require('koa-respond')
+const githubSec = require('./github').security;
 
 const app = new Koa()
 const router = new Router()
@@ -26,6 +27,14 @@ app.use(BodyParser({
 }))
 
 app.use(respond())
+
+app.use(async(ctx, next) => {
+  if (ctx.request.get("x-hub-signature") && githubSec.checkSignatures(ctx.request)) {
+    await next();
+  } else {
+    ctx.badRequest();
+  }
+});
 
 // API routes
 require('./routes')(router)

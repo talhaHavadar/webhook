@@ -1,9 +1,10 @@
 const util = require("util");
 const exec = util.promisify(require("child_process").exec);
+const crypto = require("crypto");
 
 const deploy = async() => {
     try {
-        let {stderr, stdout} = await exec(`cd ${__dirname} && ./deploy.sh`);
+        let {stderr, stdout} = process.env.NODE_ENV === "development" ? await exec(`cd ${__dirname} && ./deploy_dev.sh`) : await exec(`cd ${__dirname} && ./deploy.sh`);
         if (stderr.trim() === "") {
             console.log(stdout);
             return true;
@@ -17,6 +18,18 @@ const deploy = async() => {
 }
 
 const github = {
+    security: {
+        checkSignatures(request) {
+            const providedSignature = request.get("x-hub-signature");
+            const generatedSignature = this._generateSignature(request.body);
+            return crypto.timingSafeEqual(Buffer.from(providedSignature), Buffer.from(generatedSignature));
+        },
+        _generateSignature(payload) {
+            const hmac = crypto.createHmac('sha1', process.env.HOOK_SECRET);
+            const self_signature = hmac.update(JSON.stringify(payload)).digest('hex');
+            return `sha1=${self_signature}`;
+        }
+    },
     webhook: {
         async handle(request) {
             switch (request.get('X-GitHub-Event')) {
