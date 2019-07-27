@@ -43,7 +43,8 @@ const github = {
             let branch = data.ref;
             let senderUsername = data.sender.login;
             if (branch.indexOf("master") != -1 && senderUsername === process.env.GITHUB_USER) {
-                return await deploy();
+                deploy();
+                return true;
             }
             return false;
         }
